@@ -33,5 +33,7 @@ target_include_directories(jws INTERFACE include)
 target_sources(jws INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include/jws/json_with_schema.hpp)
 target_link_libraries(jws INTERFACE json-hpp json-schema-validator)
 
-# Examples
+# Examples and tests
 add_subdirectory(examples)
+enable_testing()
+add_subdirectory(tests)
