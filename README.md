@@ -15,7 +15,7 @@ Add a snapshot of this repository to your source code or add it as a git submodu
 These instructions assume you are using [cmake](cmake.org).
 
 In your CMakeLists.txt, add:
-```
+```CMake
 add_subdirectory(path/to/jws jws)
 add_executable(myapp main.cpp)
 target_link_libraries(myapp jws)
