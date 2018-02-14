@@ -1,5 +1,4 @@
 #include <jws/json_with_schema.hpp>
-#include <fstream>
 #include <iostream>
 
 using namespace std;
