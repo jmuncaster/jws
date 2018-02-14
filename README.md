@@ -46,3 +46,16 @@ int main(int argc, char* argv[]) {
 }
 ```
 
+### Build Examples and Tests
+
+To build the examples and tests run:
+```bash
+$ mkdir -p build && cd build
+$ cmake -D BUILD_EXAMPLES=ON -D BUILD_TESTS=ON ..
+$ make
+```
+
+### Run Tests
+```bash
+./test_jws --working_dir /path/to/jws
+```
