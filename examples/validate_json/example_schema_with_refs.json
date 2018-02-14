@@ -18,5 +18,7 @@
   "properties": {
     "billing_address": { "$ref": "#/definitions/address" },
     "shipping_address": { "$ref": "#/definitions/address" }
-  }
+  },
+
+  "required": ["shipping_address"]
 }
