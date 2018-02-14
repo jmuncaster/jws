@@ -20,7 +20,7 @@ endif(APPLE)
 
 # Create an interface-target called json-hpp
 add_library(json-hpp INTERFACE)
-target_include_directories(json-hpp INTERFACE nlohmann/json)
+target_include_directories(json-hpp INTERFACE nlohmann/json-3.1.1)
 
 # Add json-schema-validator
 add_subdirectory(pboettch/json-schema-validator-ad9e992 json-schema-validator)
