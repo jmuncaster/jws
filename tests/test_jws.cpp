@@ -5,6 +5,8 @@
 #include <iostream>
 
 using namespace std;
+using jws::load_json;
+using jws::load_validator;
 
 TEST_CASE("Loads and validates JSON against schema", "[load_validate]" ) {
   GIVEN("a simple schema") {

@@ -13,8 +13,8 @@ int main(int argc, char* argv[]) {
   cout << "  schema: " << argv[1] << endl;
   cout << "document: " << argv[2] << endl;
 
-  auto validator = load_validator(argv[1]);
-  auto document = load_json(argv[2]);
+  auto validator = jws::load_validator(argv[1]);
+  auto document = jws::load_json(argv[2]);
   validator.validate(document); // throws on error
 
   cout << "document validated" << endl;
