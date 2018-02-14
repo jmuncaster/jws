@@ -6,7 +6,7 @@
 
 using namespace std;
 
-TEST_CASE("Loads and validates JSON against schema", "[test_jws]" ) {
+TEST_CASE("Loads and validates JSON against schema", "[load_validate]" ) {
   GIVEN("a simple schema") {
     auto validator = load_validator("examples/schemas/person_schema.json");
     WHEN("a document that satisfies the schema is provided") {
@@ -36,6 +36,15 @@ TEST_CASE("Loads and validates JSON against schema", "[test_jws]" ) {
         REQUIRE_THROWS(validator.validate(document));
       }
     }
+  }
+}
+
+TEST_CASE("Handles invalid filenames gracefully", "[invalid_filenames]") {
+  SECTION("a bad json filename") {
+    REQUIRE_THROWS_AS(load_json("/path/to/nothing.json"), std::invalid_argument);
+  }
+  SECTION("a bad schema filename") {
+    REQUIRE_THROWS_AS(load_validator("/path/to/nothing.json"), std::invalid_argument);
   }
 }
 
