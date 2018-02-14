@@ -80,7 +80,6 @@ int main(int argc, char* argv[])
   	return return_code;
   }
 
-  cout  << working_dir << endl;
   if (!working_dir.empty()) {
     int return_code = chdir(working_dir.c_str());
     if (return_code != 0) {
