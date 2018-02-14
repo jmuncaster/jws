@@ -4,40 +4,49 @@
 #include <jws/json_with_schema.hpp>
 #include <iostream>
 
+using namespace std;
+
+TEST_CASE("Loads and validates JSON against schema", "[test_jws]" ) {
+  GIVEN("a simple schema") {
+    auto validator = load_validator("examples/schemas/example_schema.json");
+    WHEN("a document that satisfies the schema is provided") {
+      auto document = load_json("examples/documents/example_document.json");
+      THEN("the validator does not throw an exception") {
+        REQUIRE_NOTHROW(validator.validate(document));
+      }
+    }
+    WHEN("a document that does not satisfy the schema is provided") {
+      auto document = load_json("examples/documents/example_document_bad.json");
+      THEN("the validator throws an exception") {
+        REQUIRE_THROWS(validator.validate(document));
+      }
+    }
+  }
+  GIVEN("a schema with references") {
+    auto validator = load_validator("examples/schemas/example_schema_with_refs.json");
+    WHEN("a document that satisfies the schema is provided") {
+      auto document = load_json("examples/documents/example_document_address.json");
+      THEN("the validator does not throw an exception") {
+        REQUIRE_NOTHROW(validator.validate(document));
+      }
+    }
+    WHEN("a document that does not satisfy the schema is provided") {
+      auto document = load_json("examples/documents/example_document_bad.json");
+      THEN("the validator throws an exception") {
+        REQUIRE_THROWS(validator.validate(document));
+      }
+    }
+  }
+}
+
+// Override main so that we can add the --working_dir option
+// https://github.com/catchorg/Catch2/blob/master/docs/own-main.md#adding-your-own-command-line-options
 #ifdef WIN32
 #include "direct.h" // chdir
 #else
 #include "unistd.h" // chdir
 #endif
-
-using namespace std;
-
-TEST_CASE("Can load and validate JSON", "[test_jws]" ) {
-  SECTION("Can validate example schema") {
-    auto validator = load_validator("examples/schemas/example_schema.json");
-    SECTION("Good document passes") {
-      auto document = load_json("examples/documents/example_document.json");
-      REQUIRE_NOTHROW(validator.validate(document));
-    }
-    SECTION("Bad document fails") {
-      auto document = load_json("examples/documents/example_document_bad.json");
-      REQUIRE_THROWS(validator.validate(document));
-    }
-  }
-  SECTION("Can validate example schema with references") {
-    auto validator = load_validator("examples/schemas/example_schema_with_refs.json");
-    SECTION("Good document passes") {
-      auto document = load_json("examples/documents/example_document_address.json");
-      REQUIRE_NOTHROW(validator.validate(document));
-    }
-    SECTION("Bad document fails") {
-      auto document = load_json("examples/documents/example_document_bad.json");
-      REQUIRE_THROWS(validator.validate(document));
-    }
-  }
-}
-
-int main( int argc, char* argv[] )
+int main(int argc, char* argv[])
 {
   Catch::Session session; // There must be exactly one instance
 
@@ -71,3 +80,4 @@ int main( int argc, char* argv[] )
 
   return session.run();
 }
+
