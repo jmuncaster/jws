@@ -1,6 +1,7 @@
 #include <json.hpp>         // nlohman/json
 #include <json-schema.hpp>  // pboettch/json-schema-validator
 #include <fstream>
+#include <stdexcept>
 #include <string>
 
 using nlohmann::json;
@@ -8,6 +9,9 @@ using nlohmann::json_schema_draft4::json_validator;
 
 json load_json(const std::string& filename) {
   std::ifstream json_file(filename);
+  if (!json_file.good()) {
+    throw std::invalid_argument(std::string("cannot open: ") + filename);
+  }
   json document;
   json_file >> document;
   return document;
