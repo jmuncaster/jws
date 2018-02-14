@@ -1,2 +1,0 @@
-add_executable(validate_json validate_json.cpp)
-target_link_libraries(validate_json jws)
