@@ -23,7 +23,7 @@ target_link_libraries(myapp jws)
 
 ### Example
 
-```
+```C++
 #include <jws/json_with_schema.hpp>
 #include <iostream>
 
