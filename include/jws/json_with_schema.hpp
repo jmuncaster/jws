@@ -1,3 +1,4 @@
+#pragma once
 #include <json.hpp>         // nlohman/json
 #include <json-schema.hpp>  // pboettch/json-schema-validator
 #include <fstream>
