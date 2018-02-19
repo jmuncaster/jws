@@ -8,6 +8,7 @@ namespace jws {
   using nlohmann::json;
   using nlohmann::json_schema_draft4::json_validator;
 
+  inline
   json load_json(const std::string& filename) {
     std::ifstream json_file(filename);
     if (!json_file.good()) {
@@ -18,6 +19,7 @@ namespace jws {
     return document;
   }
 
+  inline
   json_validator load_validator(const std::string& schema_filename) {
     json schema = load_json(schema_filename);
     json_validator validator;
