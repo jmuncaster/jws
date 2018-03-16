@@ -16,6 +16,7 @@
   "type": "object",
 
   "properties": {
+    "person": { "$ref": "schemas/person_schema.json" },
     "billing_address": { "$ref": "#/definitions/address" },
     "shipping_address": { "$ref": "#/definitions/address" }
   },

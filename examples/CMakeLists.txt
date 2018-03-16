@@ -1,2 +1,4 @@
+configure_file(schemas/address_schema_with_refs.json schemas/address_schema_with_refs.json COPYONLY)
+configure_file(schemas/person_schema.json schemas/person_schema.json COPYONLY)
 add_executable(validate_json validate_json.cpp)
 target_link_libraries(validate_json jws)
