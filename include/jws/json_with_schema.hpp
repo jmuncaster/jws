@@ -43,5 +43,9 @@ namespace jws {
     json schema = load_json(schema_filename);
     return load_validator(schema);
   }
+
+  inline json_validator load_validator(const char* schema_filename) {
+    return load_validator(std::string(schema_filename));
+  }
 }
 
