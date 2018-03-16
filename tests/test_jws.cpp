@@ -10,30 +10,30 @@ using jws::load_validator;
 
 TEST_CASE("Loads and validates JSON against schema", "[load_validate]" ) {
   GIVEN("a simple schema") {
-    auto validator = load_validator("examples/schemas/person_schema.json");
+    auto validator = load_validator("schemas/person_schema.json");
     WHEN("a document that satisfies the schema is provided") {
-      auto document = load_json("examples/documents/person.json");
+      auto document = load_json("documents/person.json");
       THEN("the validator does not throw an exception") {
         REQUIRE_NOTHROW(validator.validate(document));
       }
     }
     WHEN("a document that does not satisfy the schema is provided") {
-      auto document = load_json("examples/documents/person_bad.json");
+      auto document = load_json("documents/person_bad.json");
       THEN("the validator throws an exception") {
         REQUIRE_THROWS(validator.validate(document));
       }
     }
   }
   GIVEN("a schema with references") {
-    auto validator = load_validator("examples/schemas/address_schema_with_refs.json");
+    auto validator = load_validator("schemas/address_schema_with_refs.json");
     WHEN("a document that satisfies the schema is provided") {
-      auto document = load_json("examples/documents/address.json");
+      auto document = load_json("documents/address.json");
       THEN("the validator does not throw an exception") {
         REQUIRE_NOTHROW(validator.validate(document));
       }
     }
     WHEN("a document that does not satisfy the schema is provided") {
-      auto document = load_json("examples/documents/person_bad.json");
+      auto document = load_json("documents/person_bad.json");
       THEN("the validator throws an exception") {
         REQUIRE_THROWS(validator.validate(document));
       }
