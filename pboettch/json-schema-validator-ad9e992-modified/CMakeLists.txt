@@ -124,7 +124,5 @@ if(JSON_SCHEMA_TEST_SUITE_PATH)
             )
         endforeach()
     endif()
-else()
-    message(STATUS "Consider setting JSON_SCHEMA_TEST_SUITE_PATH to a path in which JSON-Schema-Test-Suite is located (github.com/json-schema-org/JSON-Schema-Test-Suite).")
 endif()
 
