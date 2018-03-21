@@ -28,7 +28,7 @@ if(NOT TARGET json-hpp)
 endif()
 
 # and one for the validator
-add_library(json-schema-validator SHARED
+add_library(json-schema-validator
     src/json-schema-draft4.json.cpp
     src/json-uri.cpp
     src/json-validator.cpp)
