@@ -28,7 +28,7 @@ if(NOT TARGET json-hpp)
 endif()
 
 # and one for the validator
-add_library(json-schema-validator SHARED
+add_library(json-schema-validator
     src/json-schema-draft4.json.cpp
     src/json-uri.cpp
     src/json-validator.cpp)
@@ -79,8 +79,8 @@ if(NOT TARGET json-hpp) # if used as a subdirectory do not install json-schema.h
 endif()
 
 # simple json-schema-validator-executable
-add_executable(json-schema-validate app/json-schema-validate.cpp)
-target_link_libraries(json-schema-validate json-schema-validator)
+#add_executable(json-schema-validate app/json-schema-validate.cpp)
+#target_link_libraries(json-schema-validate json-schema-validator)
 
 # test-zone
 enable_testing()
@@ -124,7 +124,5 @@ if(JSON_SCHEMA_TEST_SUITE_PATH)
             )
         endforeach()
     endif()
-else()
-    message(STATUS "Consider setting JSON_SCHEMA_TEST_SUITE_PATH to a path in which JSON-Schema-Test-Suite is located (github.com/json-schema-org/JSON-Schema-Test-Suite).")
 endif()
 
