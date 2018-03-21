@@ -79,8 +79,8 @@ if(NOT TARGET json-hpp) # if used as a subdirectory do not install json-schema.h
 endif()
 
 # simple json-schema-validator-executable
-add_executable(json-schema-validate app/json-schema-validate.cpp)
-target_link_libraries(json-schema-validate json-schema-validator)
+#add_executable(json-schema-validate app/json-schema-validate.cpp)
+#target_link_libraries(json-schema-validate json-schema-validator)
 
 # test-zone
 enable_testing()
