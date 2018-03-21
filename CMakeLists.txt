@@ -12,7 +12,7 @@ add_library(json-hpp INTERFACE)
 target_include_directories(json-hpp INTERFACE nlohmann/json-3.1.1)
 
 # Add json-schema-validator
-add_subdirectory(pboettch/json-schema-validator-ad9e992 json-schema-validator)
+add_subdirectory(pboettch/json-schema-validator-ad9e992-modified json-schema-validator)
 
 # JWS = JSON With Schema
 # Our target brings in both nlohmann/json and pboettch/json-schema-validator-1.0.0
