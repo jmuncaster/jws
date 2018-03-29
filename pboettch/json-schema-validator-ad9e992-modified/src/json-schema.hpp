@@ -26,6 +26,8 @@
 #ifndef NLOHMANN_JSON_SCHEMA_HPP__
 #define NLOHMANN_JSON_SCHEMA_HPP__
 
+#define JSON_SCHEMA_VALIDATOR_API
+/*
 #ifdef _WIN32
 #    ifdef JSON_SCHEMA_VALIDATOR_EXPORTS
 #        define JSON_SCHEMA_VALIDATOR_API __declspec(dllexport)
@@ -35,6 +37,7 @@
 #else
 #    define JSON_SCHEMA_VALIDATOR_API
 #endif
+*/
 
 #include <json.hpp>
 
