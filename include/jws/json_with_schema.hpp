@@ -1,6 +1,6 @@
 #pragma once
-#include <json.hpp>         // nlohman/json
-#include <json-schema.hpp>  // pboettch/json-schema-validator
+#include <nlohmann/json.hpp>         // nlohman/json
+#include <nlohmann/json-schema.hpp>  // pboettch/json-schema-validator
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -8,7 +8,7 @@
 namespace jws {
   using nlohmann::json;
   using nlohmann::json_uri;
-  using nlohmann::json_schema_draft4::json_validator;
+  using nlohmann::json_schema::json_validator;
 
   inline json load_json(const std::string& filename) {
     std::ifstream json_file(filename);

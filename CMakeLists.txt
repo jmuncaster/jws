@@ -9,18 +9,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Create an interface-target called json-hpp
 add_library(json-hpp INTERFACE)
-target_include_directories(json-hpp INTERFACE nlohmann/json-3.1.1)
+set(nlohmann_json_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann/json-3.8.0/single_include)
+target_include_directories(json-hpp INTERFACE ${nlohmann_json_DIR})
 
 # Add json-schema-validator
-add_subdirectory(pboettch/json-schema-validator-ad9e992-modified json-schema-validator)
+add_subdirectory(pboettch/json-schema-validator-2.1.0 json-schema-validator)
 
 # JWS = JSON With Schema
-# Our target brings in both nlohmann/json and pboettch/json-schema-validator-1.0.0
+# Our target brings in both nlohmann/json and pboettch/json-schema-validator-2.1.0
 # and includes some convenience functions
 add_library(jws INTERFACE)
 target_include_directories(jws INTERFACE include)
 target_sources(jws INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include/jws/json_with_schema.hpp)
-target_link_libraries(jws INTERFACE json-hpp json-schema-validator)
+target_link_libraries(jws INTERFACE json-hpp nlohmann_json_schema_validator)
 
 # Examples and tests
 option(BUILD_JWS_EXAMPLES "Build examples" OFF)
