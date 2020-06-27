@@ -21,9 +21,22 @@ namespace jws {
   }
 
   inline void loader(const json_uri& uri, json& schema) {
+    auto path = uri.path();
     std::fstream s(uri.path().c_str());
-    if (!s.good())
-      throw std::invalid_argument("could not open " + uri.url() + " for schema loading\n");
+    if (!s.good()) {
+      // A bit of a hack here, to allow relative paths in the schema references.
+      //
+      // json_uri automatically prepends a '/' to relative paths. There is probably a good
+      // reason for this. However, for backwards compatibilty we need to allow relative
+      // paths.
+      //
+      // So we will try again to load the file, omitting the initial '/'.
+      path = path.substr(1);
+      s = std::fstream(path.c_str());
+      if (!s.good()) {
+        throw std::invalid_argument("could not open " + uri.url() + " for schema loading\n");
+      }
+    }
 
     try {
       s >> schema;
