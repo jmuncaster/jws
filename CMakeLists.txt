@@ -13,6 +13,9 @@ set(nlohmann_json_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann/json-3.9.1/single_inc
 target_include_directories(json-hpp INTERFACE ${nlohmann_json_DIR})
 
 # Add json-schema-validator
+# Disable BUILD_TESTS and BUILD_EXAMPLES; cmake won't pass otherwise.
+set(BUILD_TESTS OFF CACHE BOOL "Build tests" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "Build examples" FORCE)
 add_subdirectory(pboettch/json-schema-validator-e1cef0b json-schema-validator)
 
 # JWS = JSON With Schema
