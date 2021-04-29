@@ -55,3 +55,13 @@ add_executable(json-patch json-patch.cpp)
 target_include_directories(json-patch PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(json-patch nlohmann_json_schema_validator)
 add_test(NAME json-patch COMMAND json-patch)
+
+# Unit test for format checker fail at schema parsing time
+add_executable(issue-117-format-error issue-117-format-error.cpp)
+target_link_libraries(issue-117-format-error nlohmann_json_schema_validator)
+add_test(NAME issue-117-format-error COMMAND issue-117-format-error)
+
+add_executable(binary-validation binary-validation.cpp)
+target_include_directories(binary-validation PRIVATE ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(binary-validation PRIVATE nlohmann_json_schema_validator)
+add_test(NAME binary-validation COMMAND binary-validation)
