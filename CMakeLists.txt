@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Create an interface-target called json-hpp
 add_library(json-hpp INTERFACE)
 set(nlohmann_json_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann/json-3.9.1/single_include)
+set(JSON_HPP ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann/json-3.9.1/single_include)
 target_include_directories(json-hpp INTERFACE ${nlohmann_json_DIR})
 
 # Add json-schema-validator
