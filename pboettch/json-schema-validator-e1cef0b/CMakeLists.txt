@@ -1,12 +1,27 @@
-project(nlohmann_json_schema_validator
-    LANGUAGES CXX)
+# Add Hunter support (Disabled by default)
+option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
+if(HUNTER_ENABLED)
+    include("cmake/HunterGate.cmake")
+    HunterGate(
+        URL "https://github.com/cpp-pm/hunter/archive/v0.23.262.tar.gz"
+        SHA1 "eb51e633e08cdbe2153caf255e9c23968fecb29d"
+    )
+endif()
 
-set(PROJECT_VERSION 2.1.0)
+project(nlohmann_json_schema_validator
+        LANGUAGES CXX)
+
+set(PROJECT_VERSION 2.1.1)
 
 cmake_minimum_required(VERSION 3.2)
 
-option(BUILD_TESTS      "Build tests"    ON)
-option(BUILD_EXAMPLES   "Build examples" ON)
+option(BUILD_TESTS    "Build tests"    ON)
+option(BUILD_EXAMPLES "Build examples" ON)
+
+# Add nlohmann_json::nlohmann_json using Hunter package manager
+if(HUNTER_ENABLED)
+    hunter_add_package(nlohmann_json)
+endif()
 
 # the library
 add_library(nlohmann_json_schema_validator
@@ -45,6 +60,8 @@ if(TARGET nlohmann_json::nlohmann_json)
         PUBLIC nlohmann_json::nlohmann_json)
 
     set(JSON_VALIDATOR_INSTALL OFF)
+    set(BUILD_TESTS OFF)
+    set(BUILD_EXAMPLES OFF)
 
 elseif(TARGET nlohmann_json) # or nlohmann_json, we are used a sub-project next to nlohmann-json's git repo
     message(STATUS "Found nlohmann_json-target - linking with it")
@@ -52,6 +69,8 @@ elseif(TARGET nlohmann_json) # or nlohmann_json, we are used a sub-project next 
         nlohmann_json_schema_validator
         PUBLIC nlohmann_json)
     set(JSON_VALIDATOR_INSTALL OFF)
+    set(BUILD_TESTS OFF)
+    set(BUILD_EXAMPLES OFF)
 
 else()
     if (NOT IS_ABSOLUTE ${nlohmann_json_DIR}) # make nlohmann_json_DIR absolute
@@ -97,7 +116,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     target_compile_options(nlohmann_json_schema_validator
         PRIVATE
-            -Wall -Wextra)
+            -Wall -Wextra -Wshadow)
 endif()
 
 if(BUILD_SHARED_LIBS)
@@ -141,6 +160,9 @@ if (BUILD_EXAMPLES)
     add_executable(readme-json-schema app/readme.cpp)
     target_link_libraries(readme-json-schema nlohmann_json_schema_validator)
 
+    add_executable(format-json-schema app/format.cpp)
+    target_link_libraries(format-json-schema nlohmann_json_schema_validator)
+
     install(TARGETS json-schema-validate readme-json-schema
             DESTINATION bin)
 endif()
@@ -154,32 +176,37 @@ endif()
 if(JSON_VALIDATOR_INSTALL)
     # Set Up the Project Targets and Config Files for CMake
 
-    # Set the install path to the cmake config files
-    set(INSTALL_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME})
-
-    # Create the ConfigVersion file
-    include(CMakePackageConfigHelpers) # write_basic_package_version_file
-    write_basic_package_version_file( ${PROJECT_NAME}ConfigVersion.cmake
-                                      VERSION ${PACKAGE_VERSION}
-                                      COMPATIBILITY SameMajorVersion)
-
-    # Get the relative path from the INSTALL_CMAKE_DIR to the include directory
-    file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${CMAKE_INSTALL_PREFIX}/include")
-
-
-    # Configure the Config.cmake file with the proper include directory
-    set(CONF_INCLUDE_DIRS "\${JSON_SCHEMA_VALIDATOR_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-    configure_file(${PROJECT_NAME}Config.cmake.in
-                   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" @ONLY)
-
-    # Install the Config.cmake and ConfigVersion.cmake files
-    install(FILES
-            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-            "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-            DESTINATION "${INSTALL_CMAKE_DIR}")
+    # Set the install path to the cmake config files (Relative, so install works correctly under Hunter as well)
+    set(INSTALL_CMAKE_DIR "lib/cmake/${PROJECT_NAME}")
+    set(INSTALL_CMAKEDIR_ROOT share/cmake)
 
     # Install Targets
     install(EXPORT ${PROJECT_NAME}Targets
             FILE ${PROJECT_NAME}Targets.cmake
             DESTINATION "${INSTALL_CMAKE_DIR}")
+
+
+    include(CMakePackageConfigHelpers)
+    write_basic_package_version_file(
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+        )
+
+
+    configure_package_config_file(
+        ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        INSTALL_DESTINATION ${INSTALL_CMAKEDIR_ROOT}/${PROJECT_NAME}
+        )
+
+    install(
+        FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        DESTINATION
+            ${INSTALL_CMAKE_DIR}
+        )
+
+
 endif()
