@@ -368,12 +368,16 @@ class logical_combination : public schema
 	void validate(const json::json_pointer &ptr, const json &instance, json_patch &patch, error_handler &e) const final
 	{
 		size_t count = 0;
+		std::ostringstream sub_schema_err;
 
 		for (auto &s : subschemata_) {
 			first_error_handler esub;
 			s->validate(ptr, instance, patch, esub);
-			if (!esub)
+			if (!esub) {
 				count++;
+			} else {
+				sub_schema_err << "schema for ptr: " << esub.ptr_.to_string() << "\n  failed because: " << esub.message_ << "\n";
+			}
 
 			if (is_validate_complete(instance, ptr, e, esub, count))
 				return;
@@ -382,7 +386,7 @@ class logical_combination : public schema
 		// could accumulate esub details for anyOf and oneOf, but not clear how to select which subschema failure to report
 		// or how to report multiple such failures
 		if (count == 0)
-			e.error(ptr, instance, "no subschema has succeeded, but one of them is required to validate");
+			e.error(ptr, instance, "no subschema has succeeded, but one of them is required to validate. Details: \n" + sub_schema_err.str());
 	}
 
 	// specialized for each of the logical_combination_types
