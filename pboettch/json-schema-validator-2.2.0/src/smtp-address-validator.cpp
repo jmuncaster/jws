@@ -63,7 +63,7 @@ static const short _address_key_offsets[] = {
 	1363, 1365, 1367, 1368, 1370, 1388, 0
 };
 
-static const char _address_trans_keys[] = {
+static const signed char _address_trans_keys[] = {
 	-32, -19, -16, -12, 34, 45, 61, 63,
 	-62, -33, -31, -17, -15, -13, 33, 39,
 	42, 43, 47, 57, 65, 90, 94, 126,
@@ -723,7 +723,7 @@ bool is_address(const char* p, const char* pe)
 			}
 		}
 		else {
-			_keys = ( _address_trans_keys + (_address_key_offsets[cs]));
+			_keys = ( (const char *)_address_trans_keys + (_address_key_offsets[cs]));
 			_trans = (unsigned int)_address_index_offsets[cs];
 			
 			_klen = (int)_address_single_lengths[cs];
