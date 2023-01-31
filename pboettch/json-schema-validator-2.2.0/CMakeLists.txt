@@ -53,13 +53,34 @@ endif()
 option(JSON_VALIDATOR_BUILD_TESTS    "Build tests"    ${JSON_VALIDATOR_IS_TOP_LEVEL})
 option(JSON_VALIDATOR_BUILD_EXAMPLES "Build examples" ${JSON_VALIDATOR_IS_TOP_LEVEL})
 
-if(NOT TARGET nlohmann_json::nlohmann_json)
-    find_package(nlohmann_json REQUIRED)
+#if(NOT TARGET nlohmann_json::nlohmann_json)
+#    find_package(nlohmann_json 3.11.2 REQUIRED PATHS "${CMAKE_CURRENT_SOURCE_DIR}/../../nlohmann")
+#endif()
+#
+#target_link_libraries(
+#    nlohmann_json_schema_validator
+#    PUBLIC nlohmann_json::nlohmann_json)
+
+
+# find nlohmann/json.hpp
+# This is forced in jws, since we already provide it.
+message(STATUS ${nlohmann_json_orignal_DIR})
+
+find_path(JSON_HPP nlohmann/json.hpp
+        PATHS ${nlohmann_json_orignal_DIR})
+
+if(EXISTS ${JSON_HPP}/nlohmann/json.hpp)
+    message(STATUS "Found nlohmann/json.hpp in given path: ${JSON_HPP}")
+    target_include_directories(
+            nlohmann_json_schema_validator
+            PUBLIC $<BUILD_INTERFACE:${JSON_HPP}>)
+else()
+    message(FATAL_ERROR "could not find nlohmann/json.hpp or any related cmake-target. Please set nlohmann_json_DIR.")
 endif()
 
-target_link_libraries(
-    nlohmann_json_schema_validator
-    PUBLIC nlohmann_json::nlohmann_json)
+# nlohmann_json_DIR has to be reset (for later use in tests)
+set(nlohmann_json_DIR ${JSON_HPP})
+
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

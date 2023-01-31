@@ -17,10 +17,10 @@ target_include_directories(json-hpp INTERFACE ${nlohmann_json_DIR})
 # Disable BUILD_TESTS and BUILD_EXAMPLES; cmake won't pass otherwise.
 set(BUILD_TESTS OFF CACHE BOOL "Build tests" FORCE)
 set(BUILD_EXAMPLES OFF CACHE BOOL "Build examples" FORCE)
-add_subdirectory(pboettch/json-schema-validator-e1cef0b json-schema-validator)
+add_subdirectory(pboettch/json-schema-validator-2.2.0 json-schema-validator)
 
 # JWS = JSON With Schema
-# Our target brings in both nlohmann/json and pboettch/json-schema-validator-e1cef0b
+# Our target brings in both nlohmann/json and pboettch/json-schema-validator-2.2.0
 # and includes some convenience functions
 add_library(jws INTERFACE)
 target_include_directories(jws INTERFACE include)
